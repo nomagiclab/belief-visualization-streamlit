@@ -18,23 +18,25 @@ the result of the sensory reading.
 The belief distribution is updated using Bayes theorem relying on the assumptions listed below.
 
 
-### Probabilities for moves
+### Probabilistic motion model
 
 * For the case of `Go left` the agent with probability 0.9 will indeed go left 
 (unless it is already at the very left in which case it will stay) and 
 with 0.1 probability it will remain in its current position.
-* For the case of `Go right` the agent with probability 0.8 will indeed go right 
+* Analogously for `Go right` the agent with probability 0.9 will indeed go right 
 (unless it is already at the very right in which case it will stay) and 
-with 0.2 probability it will remain in its current position.
+with 0.1 probability it will remain in its current position.
 
-### Probabilities for sensory readings
+### Probabilistic sensory model
 
-* The sensor with probability 0.7 returns a correct reading and with probability 0.3 returns a random color (R, G, B).
+* The sensor with probability 0.7 returns a correct reading and with probability 0.3 returns a random color from {R, G, B}.
+* Q: what is the probability of `P(z=RED | x=RED)`?
 
 """
 
-INITIAL_DISTRIBUTION = np.array([0.1, 0.2, 0.5, 0.05, 0.05, 0.1])
-COLORS = 'RGBRGB'
+COLORS = 'RRRRRRRGGGGGGGRRBBBRRRRRRRRRRRRBB'
+INITIAL_DISTRIBUTION = np.zeros(len(COLORS), dtype=np.float32)
+INITIAL_DISTRIBUTION[len(COLORS)//2] = 1.0
 
 
 @dataclasses.dataclass
@@ -108,9 +110,12 @@ if sensor:
 
 """
 ## Belief 
+
+At the top there is a bar chart showing the current belief of the robot states (distribution over the states). 
+At the bottom you can see colors of each of the cells of the grid.
 """
 
-x = list(range(6))
+x = list(range(len(COLORS)))
 fig.add_trace(go.Bar(x=x, y=state.p), row=1, col=1)
 
 img_rgb = np.array([[[255, 0, 0] if c == 'R' else [0, 255, 0] if c == 'G' else [0, 0, 255] for c in COLORS]], dtype=np.uint8)
@@ -119,6 +124,7 @@ fig.add_trace(px.imshow(img_rgb).data[0], row=2, col=1)
 fig.update_layout(height=350, width=600)
 
 fig.update_layout(
+  #  xaxis=dict(showticklabels=False, range=[0,len(COLORS)]),
     xaxis=dict(showticklabels=False),
     yaxis2=dict(showticklabels=False)
 )
