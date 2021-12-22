@@ -47,7 +47,9 @@ fig = make_subplots(rows=2, cols=1)
 ## Command the agent
 """
 
-if 'p' not in state or st.button("Init"):
+init = st.button("Init")
+
+if 'p' not in state or init:
     state.p = np.copy(INITIAL_DISTRIBUTION)
     state.sequence = ''
 
@@ -63,7 +65,7 @@ if col1.button("Go left"):
   state.sequence += 'l'
 
 if col2.button("Go right"):
-  newp = state.p * 0.2
+  newp = state.p * 0.1
 
   newp[-1] += state.p[-1] * 0.9
   newp[1:] += state.p[:-1] * 0.9
