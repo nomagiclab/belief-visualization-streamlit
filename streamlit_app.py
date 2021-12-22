@@ -65,8 +65,8 @@ if col1.button("Go left"):
 if col2.button("Go right"):
   newp = state.p * 0.2
 
-  newp[-1] += state.p[-1] * 0.8
-  newp[1:] += state.p[:-1] * 0.8
+  newp[-1] += state.p[-1] * 0.9
+  newp[1:] += state.p[:-1] * 0.9
 
   state.p = newp
   state.sequence += 'r'
