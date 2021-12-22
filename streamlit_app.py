@@ -10,6 +10,7 @@ import streamlit as st
 ## Belief state visualization
 
 There is a given initial distribution of agent position on a line depicted by a bar chart below. 
+Initially the agent is in the middle of the board with probability 1.0.
 You can either ask the agent to perform one of the move commands (`Go left` or `Go right`)
 or use the sensor.
 
@@ -38,17 +39,7 @@ COLORS = 'RRRRRRRGGGGGGGRRBBBRRRRRRRRRRRRBB'
 INITIAL_DISTRIBUTION = np.zeros(len(COLORS), dtype=np.float32)
 INITIAL_DISTRIBUTION[len(COLORS)//2] = 1.0
 
-
-@dataclasses.dataclass
-class GameState:
-    p = np.copy(INITIAL_DISTRIBUTION)
-    sequence = ''
-
-@st.cache(allow_output_mutation=True)
-def persistent_game_state() -> GameState:
-    return GameState()
-
-state = persistent_game_state()
+state = st.session_state
 
 fig = make_subplots(rows=2, cols=1)
 
@@ -56,7 +47,7 @@ fig = make_subplots(rows=2, cols=1)
 ## Command the agent
 """
 
-if st.button("Init"):
+if 'p' not in state or st.button("Init"):
     state.p = np.copy(INITIAL_DISTRIBUTION)
     state.sequence = ''
 
