@@ -7,6 +7,12 @@ import streamlit as st
 
 
 """
+
+# Bayes filter
+
+Below is an example of an application of the [Bayes filter](https://en.wikipedia.org/wiki/Recursive_Bayesian_estimation) 
+for an agent moving on a colored 1D grid.
+
 ## Belief state visualization
 
 There is a given initial distribution of agent position on a line depicted by a bar chart below. 
