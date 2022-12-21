@@ -41,10 +41,6 @@ with 0.1 probability it will remain in its current position.
 
 """
 
-COLORS = 'RRRRRRRGGGGGGGRRBBBRRRRRRRRRRRRBB'
-INITIAL_DISTRIBUTION = np.zeros(len(COLORS), dtype=np.float32)
-INITIAL_DISTRIBUTION[len(COLORS)//2] = 1.0
-
 state = st.session_state
 
 fig = make_subplots(rows=2, cols=1)
@@ -53,9 +49,19 @@ fig = make_subplots(rows=2, cols=1)
 ## Command the agent
 """
 
-init = st.button("Init")
+# streamlit read text from user input
+
+INITIAL_COLORS = "RRRRRRRGGGGGGGRRBBBRRRRRRRRRRRRBB"
+board = st.text_input(label="Colors of the board: use a string of at least 6 letters {R,G,B} (click init afterwards)." , value=INITIAL_COLORS)
+COLORS = board
+INITIAL_DISTRIBUTION = np.zeros(len(COLORS), dtype=np.float32)
+INITIAL_DISTRIBUTION[len(COLORS)//2] = 1.0
+
+init = st.button("Initialize new board")
 
 if 'p' not in state or init:
+    INITIAL_DISTRIBUTION = np.zeros(len(COLORS), dtype=np.float32)
+    INITIAL_DISTRIBUTION[len(COLORS)//2] = 1.0
     state.p = np.copy(INITIAL_DISTRIBUTION)
     state.sequence = ''
 
